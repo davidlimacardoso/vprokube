@@ -56,7 +56,7 @@ docker-compose up -d
 │ └── web/ # Web server container
 │ ├── Dockerfile
 │ └── nginvproapp.conf # Nginx configuration
-├── kubedefs # Kubernets infraestructure
+├── k8s # Kubernets infraestructure
 │   ├── appdeploy.yaml # App interface configurations
 │   ├── appingress.yaml # Ingres-Nginx routing configurations
 │   ├── appservice.yaml # App service 
@@ -86,11 +86,15 @@ terraform apply
 
 2. Deploy Application
 ```bash
+
+# Create the Ingress Controller
+kubectl create -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/aws/deploy.yaml
+
 # Create namespace
-kubectl apply -f kubedefs/namespace.yml
+kubectl apply -f k8s/namespace.yml
 
 # Apply configurations
-kubectl apply -f kubedefs/.
+kubectl apply -f k8s/.
 ```
 3. Verify Deployment
 ```bash
@@ -135,7 +139,9 @@ kubectl scale deployment <deployment-name> --replicas=<number>
 1. Remove Kubernetes Resources
 
 ```bash
-kubectl delete -f kubedefs/.
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/aws/deploy.yaml
+
+kubectl delete -f k8s/.
 ```
 2. Destroy Infrastructure
 
